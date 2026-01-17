@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Control de Gastos - Remodelación Xochitepec</title>
+    <title>Control de Gastos - RemodelaciÃ³n Xochitepec</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js'></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -61,9 +61,18 @@
                             d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                     </svg>
                     <span class="ml-2 text-xl font-bold text-gray-900 tracking-tight">Gastos Xochitepec <span
-                            class="text-xs text-gray-500 font-normal">v1.3</span></span>
+                            class="text-xs text-gray-500 font-normal">v1.7</span></span>
                 </div>
                 <div class="flex items-center space-x-2">
+                    <button onclick="app.injectManualTickets()"
+                        class="hidden sm:flex items-center px-3 py-2 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg text-sm font-medium transition-colors border border-indigo-200">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12">
+                            </path>
+                        </svg>
+                        Descargar Tickets
+                    </button>
                     <button onclick="app.downloadJSON()"
                         class="p-2 text-gray-500 hover:text-indigo-600 transition-colors"
                         title="Exportar Respaldo JSON">
@@ -138,7 +147,7 @@
             <!-- Tere Summary -->
             <div class="glass-panel rounded-2xl p-6 border-l-4 border-tere-500">
                 <div class="flex items-center justify-between mb-2">
-                    <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider">Tere (Remodelación)</h3>
+                    <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider">Tere (RemodelaciÃ³n)</h3>
                     <div class="p-2 bg-green-50 rounded-lg text-green-600">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -183,7 +192,7 @@
                 <!-- Row 1: Basic Info -->
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div class="col-span-1 md:col-span-2">
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Concepto / Artículo</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Concepto / ArtÃ­culo</label>
                         <input type="text" id="itemName" required placeholder="Ej. Bulto de Cemento"
                             class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition-all">
                     </div>
@@ -243,7 +252,7 @@
 
                 <!-- Row 3: Distribution -->
                 <div class="border-t border-gray-100 pt-4">
-                    <label class="block text-sm font-bold text-gray-700 mb-3">Distribución de Uso</label>
+                    <label class="block text-sm font-bold text-gray-700 mb-3">DistribuciÃ³n de Uso</label>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <!-- Paola Side -->
                         <div
@@ -274,7 +283,7 @@
                             <div class="flex justify-between items-center mb-2">
                                 <label class="text-green-900 font-semibold flex items-center">
                                     <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
-                                    Tere (Remodelación)
+                                    Tere (RemodelaciÃ³n)
                                 </label>
                                 <button type="button" id="btn-assign-tere"
                                     class="text-xs text-green-700 underline hover:text-green-900">Asignar
@@ -322,7 +331,7 @@
                 <h2 class="text-lg font-semibold text-gray-800">Historial de Compras</h2>
                 <div class="flex flex-col sm:flex-row gap-3">
                     <div class="relative">
-                        <input type="text" id="searchInput" placeholder="Buscar artículo..."
+                        <input type="text" id="searchInput" placeholder="Buscar artÃ­culo..."
                             class="pl-9 pr-4 py-2 rounded-lg border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 text-sm w-full sm:w-64">
                         <svg class="w-4 h-4 text-gray-400 absolute left-3 top-3" fill="none" stroke="currentColor"
                             viewBox="0 0 24 24">
@@ -350,7 +359,7 @@
                                 Fecha</th>
                             <th scope="col"
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Artículo / Tienda</th>
+                                ArtÃ­culo / Tienda</th>
                             <th scope="col"
                                 class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Cant. Total</th>
@@ -387,7 +396,7 @@
                     </svg>
                 </div>
                 <h3 class="text-lg font-medium text-gray-900">Sin gastos registrados</h3>
-                <p class="text-gray-500">Agrega el primer artículo usando el formulario de arriba.</p>
+                <p class="text-gray-500">Agrega el primer artÃ­culo usando el formulario de arriba.</p>
             </div>
         </div>
     </div>
@@ -434,7 +443,7 @@
                             </path>
                         </svg>
                         <p class="text-gray-600 font-medium">Click para subir foto del ticket</p>
-                        <p class="text-xs text-gray-400 mt-1">O arrastra la imagen aquí</p>
+                        <p class="text-xs text-gray-400 mt-1">O arrastra la imagen aquÃ­</p>
                         <button onclick="document.getElementById('ticketInput').click()"
                             class="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 transition">Seleccionar
                             Foto</button>
@@ -451,7 +460,7 @@
                 <!-- Staging Table -->
                 <div id="staging-area" class="hidden">
                     <div class="flex justify-between items-end mb-3">
-                        <h4 class="font-semibold text-gray-700">Artículos Detectados</h4>
+                        <h4 class="font-semibold text-gray-700">ArtÃ­culos Detectados</h4>
                         <button onclick="app.addStagingRow()"
                             class="text-sm text-indigo-600 hover:text-indigo-800 font-medium flex items-center">
                             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -489,7 +498,7 @@
             <!-- Footer -->
             <div class="px-6 py-4 border-t border-gray-100 bg-gray-50 rounded-b-2xl flex justify-between items-center">
                 <div class="text-sm text-gray-500">
-                    <span id="staging-count">0</span> artículos listos
+                    <span id="staging-count">0</span> artÃ­culos listos
                 </div>
                 <div class="space-x-3">
                     <button onclick="app.closeBulkModal()"
@@ -514,7 +523,7 @@
         <svg class="w-5 h-5 text-green-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
         </svg>
-        <span id="toast-msg">Acción completada</span>
+        <span id="toast-msg">AcciÃ³n completada</span>
     </div>
 
     <script>
@@ -666,7 +675,7 @@
 
             handleSubmit() {
                 if (!this.checkDistributionSum()) {
-                    if (!confirm("Las cantidades distribuidas (Paola + Tere) no suman el total. ¿Guardar de todas formas?")) return;
+                    if (!confirm("Las cantidades distribuidas (Paola + Tere) no suman el total. Â¿Guardar de todas formas?")) return;
                 }
 
                 const qty = parseFloat(this.dom.totalQty.value);
@@ -703,7 +712,7 @@
             }
 
             deleteItem(id) {
-                if (confirm('¿Estás segura de borrar este gasto?')) {
+                if (confirm('Â¿EstÃ¡s segura de borrar este gasto?')) {
                     this.expenses = this.expenses.filter(e => e.id !== id);
                     this.save();
                     this.render();
@@ -756,7 +765,7 @@
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${e.date}</td>
                         <td class="px-6 py-4">
                             <div class="text-sm font-medium text-gray-900">${e.name}</div>
-                            <div class="text-xs text-gray-500">${e.store || 'Sin tienda'} • Pagó: <span class="font-semibold ${e.paidBy === 'Paola' ? 'text-blue-600' : 'text-green-600'}">${e.paidBy}</span></div>
+                            <div class="text-xs text-gray-500">${e.store || 'Sin tienda'} â€¢ PagÃ³: <span class="font-semibold ${e.paidBy === 'Paola' ? 'text-blue-600' : 'text-green-600'}">${e.paidBy}</span></div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">${e.totalQty}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">$${e.unitPrice.toFixed(2)}</td>
@@ -797,7 +806,7 @@
 
                 // Net Balance between P and T
                 // Let's look at it from Paola's perspective (since she is likely the app owner)
-                // "Cuánto debe pagar cada persona"
+                // "CuÃ¡nto debe pagar cada persona"
 
                 const paolaDiff = paolaPaid - paolaTotal; // If > 0, Paola paid more than her share. Tere owes her.
                 // const tereDiff = terePaid - tereTotal; // Should be inverse of paolaDiff approximately (floating point)
@@ -853,7 +862,7 @@
                     try {
                         const json = JSON.parse(e.target.result);
                         if (Array.isArray(json)) {
-                            if (confirm("Esto reemplazará todos los datos actuales. ¿Estás segura?")) {
+                            if (confirm("Esto reemplazarÃ¡ todos los datos actuales. Â¿EstÃ¡s segura?")) {
                                 this.expenses = json;
                                 this.save();
                                 this.render();
@@ -870,8 +879,126 @@
                 input.value = ''; // reset
             }
 
-            confirmClearAll() {
-                if (confirm("ADVERTENCIA: ¿Estás segura de querer borrar TODO el historial de gastos?\nEsta acción no se puede deshacer.")) {
+            // --- MANUAL TICKET INJECTION (AI ASSISTED) ---
+            injectManualTickets() {
+                const tickets = [
+                    // --- BATCH 1 (14 Jan - Previous) ---
+                    { date: '2026-01-14', store: 'Ferreprecios', name: 'Pistola Electrica Para Pintar', qty: 1, price: 1090.52 },
+                    { date: '2026-01-14', store: 'Ferreprecios', name: 'Gaveta Apilable Plastico', qty: 8, price: 15.52 },
+                    { date: '2026-01-14', store: 'Ferreprecios', name: 'Llave Articulada Plomero', qty: 1, price: 150.86 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Linterna ADIR 496 Blanca 3 LED', qty: 2, price: 34.45 },
+                    { date: '2026-01-13', store: 'Ferretera 41', name: 'Broca C/ Avellanador Madera 7pz', qty: 1, price: 103.42 },
+                    { date: '2026-01-13', store: 'Ferretera 41', name: 'Broca Sacabocado Madera', qty: 1, price: 111.48 },
+                    { date: '2026-01-13', store: 'Ferretera 41', name: 'Puntas Adir Impacto 5pz', qty: 1, price: 39.91 },
+                    { date: '2026-01-13', store: 'Ferretera 41', name: 'Disco 5 G180 Lija 5pz', qty: 1, price: 21.34 },
+                    { date: '2026-01-13', store: 'Ferretera 41', name: 'Mesa Trabajo Portatil 60cm', qty: 1, price: 558.62 },
+                    { date: '2026-01-14', store: 'Parisina', name: 'Plastico Pelicula Estampi (mts)', qty: 2.5, price: 29.99 },
+                    { date: '2026-01-14', store: 'Parisina', name: 'Decoracion Papel Tapiz (mts)', qty: 10, price: 49.99 },
+                    { date: '2026-01-13', store: 'Ferretera 41', name: 'Pasador Adir 3" Cromo', qty: 1, price: 16.31 },
+                    { date: '2026-01-13', store: 'Ferretera 41', name: 'Mensula Negra 8x10 Adir', qty: 4, price: 8.08 },
+                    { date: '2026-01-13', store: 'Ferretera 41', name: 'Mensula Negra 5x6 Adir', qty: 4, price: 3.93 }, 
+                    { date: '2026-01-13', store: 'Ferretera 41', name: 'Remachadora 10 Clasica', qty: 1, price: 108.49 },
+                    { date: '2026-01-13', store: 'Ferretera 41', name: 'Aflojatodo 110ml Santul', qty: 1, price: 22.80 },
+
+                    // --- BATCH 2 (15 Jan - Previous) ---
+                    // Arenci
+                    { date: '2026-01-15', store: 'Arenci', name: 'Monomando Lavabo Cisne Inox', qty: 2, price: 510.00 },
+                    { date: '2026-01-15', store: 'Arenci', name: 'Llave de Paso Sin Contratuerca', qty: 1, price: 70.01 },
+                    // FIX Ferreterias
+                    { date: '2026-01-12', store: 'FIX Ferreterias', name: 'Lona uso rudo 3x4m Verde', qty: 1, price: 305.00 },
+                    { date: '2026-01-12', store: 'FIX Ferreterias', name: 'Pintura Aerosol Cobre', qty: 1, price: 69.00 },
+                    { date: '2026-01-12', store: 'FIX Ferreterias', name: 'Pintura Aerosol Gris', qty: 4, price: 35.00 },
+                    { date: '2026-01-12', store: 'FIX Ferreterias', name: 'Pintura Aerosol Negro', qty: 2, price: 35.00 },
+                    { date: '2026-01-12', store: 'FIX Ferreterias', name: 'Linterna Minero LED', qty: 1, price: 65.00 },
+                    { date: '2026-01-12', store: 'FIX Ferreterias', name: 'Pilas Alcalinas (Pack)', qty: 2, price: 29.00 },
+                    { date: '2026-01-12', store: 'FIX Ferreterias', name: 'Bolsa Ecologica', qty: 1, price: 18.00 },
+                    // El 45 (Small Ticket 623)
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Cinta Teflon Adir 3/4', qty: 2, price: 2.85 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Cinta Aislante Vinil Negro', qty: 1, price: 12.85 },
+                    // SuperMat
+                    { date: '2026-01-12', store: 'SuperMat', name: 'Esmalte Negro Mate 4LT', qty: 1, price: 613.32 },
+                    { date: '2026-01-12', store: 'SuperMat', name: 'Cutter Alma Metalica', qty: 1, price: 45.00 },
+                    { date: '2026-01-12', store: 'SuperMat', name: 'Solvente Thinner 1LT', qty: 2, price: 48.00 },
+                    { date: '2026-01-12', store: 'SuperMat', name: 'Cinta Canela Empaque', qty: 1, price: 75.00 },
+                    { date: '2026-01-12', store: 'SuperMat', name: 'Brochas y Mascarilla', qty: 1, price: 81.00 },
+                    { date: '2026-01-12', store: 'SuperMat', name: 'Niples y Adaptadores Varios', qty: 1, price: 75.00 },
+
+                    // --- BATCH 3 (New - Home Depot Home Depot 16 Jan) ---
+                    { date: '2026-01-16', store: 'Home Depot', name: 'Conector Para Lavabo (Neto)', qty: 1, price: 80.36 },
+                    { date: '2026-01-16', store: 'Home Depot', name: 'Resistol 5000 1 Lt (Neto)', qty: 1, price: 332.22 },
+                    { date: '2026-01-16', store: 'Home Depot', name: 'Pad Paint 7 (Neto)', qty: 1, price: 151.90 },
+                    { date: '2026-01-16', store: 'Home Depot', name: 'Rodillo Professional (Neto)', qty: 1, price: 50.96 },
+                    { date: '2026-01-16', store: 'Home Depot', name: 'Triplay Construccion (Neto)', qty: 1, price: 449.09 },
+                    { date: '2026-01-16', store: 'Home Depot', name: 'Mano de Obra', qty: 1, price: 105.00 },
+
+                    // --- BATCH 4 (New - El 45 Big Ticket 12/1/2026 CORRECTED) ---
+                    // Replaces the previous estimated entry
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Cespol Adir 2090 Flex', qty: 2, price: 36.85 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Pija Adir 13353 #8 1/2', qty: 2, price: 7.45 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Pija Adir 13354 #8 3/4', qty: 4, price: 8.85 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Pija Adir 13355 #8 1', qty: 2, price: 11.60 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Pija Adir 13364 #1 1/2', qty: 1, price: 21.05 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Regadera Adir 16125 Cua ABS', qty: 2, price: 99.50 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Mezcladora Lavabo Adir 16045', qty: 1, price: 168.90 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Coladera Adir 16054 Bote Tramp', qty: 1, price: 54.25 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Silicon Adir 1534 Transp', qty: 1, price: 15.90 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Llave Adir 453 Jardi Ros', qty: 1, price: 19.50 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Taquete Adir 1711 Plast 1/4', qty: 1, price: 7.00 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Taquete Adir 1712 Plast 5/16', qty: 1, price: 13.45 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Taquete Adir 1710 Plast 3/16', qty: 1, price: 7.95 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Desarmad Adir 3213 Cabinet', qty: 1, price: 10.20 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Llave Adir 425 Stilson 8', qty: 1, price: 41.90 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Placa Forza Arma Apag Sen', qty: 6, price: 37.50 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Placa Forza Arma Con Dople', qty: 6, price: 32.50 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Reflector Igoto 50W', qty: 2, price: 120.00 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Foco Igoto 15W LED', qty: 8, price: 13.00 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Extensio Igoto 30m Rude', qty: 1, price: 135.50 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Socket Iusa Porcela Redo', qty: 2, price: 13.50 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Cable Iusa 20m', qty: 1, price: 199.50 },
+                ];
+
+                let count = 0;
+                // Simple hash to avoid duplicates
+                const existingHashes = new Set(this.expenses.map(e => `${e.date}-${e.store}-${e.name}-${e.unitPrice}`));
+
+                tickets.forEach(t => {
+                    const hash = `${t.date}-${t.store}-${t.name}-${t.price}`;
+                    if (existingHashes.has(hash)) return;
+
+                    const total = t.qty * t.price;
+                    const item = {
+                        id: Date.now().toString() + Math.random().toString(36).substr(2, 5),
+                        date: t.date,
+                        name: t.name,
+                        store: t.store,
+                        paidBy: 'Paola',
+                        totalQty: t.qty,
+                        unitPrice: t.price,
+                        totalPrice: total,
+                        qtyPaola: t.qty / 2,
+                        qtyTere: t.qty / 2,
+                        costPaola: total / 2,
+                        costTere: total / 2
+                    };
+                    this.expenses.unshift(item);
+                    count++;
+                });
+
+                this.save();
+                this.render();
+                
+                if (count > 0) {
+                    this.showToast(`${count} tickets nuevos aÃ±adidos`);
+                    alert(`Â¡Ã‰xito! Se agregaron ${count} nuevos artÃ­culos.`);
+                } else {
+                    alert('No se encontraron tickets nuevos (ya estaban agregados).');
+                }
+            }
+
+            confirmClearAll
+
+() {
+                if (confirm("ADVERTENCIA: Â¿EstÃ¡s segura de querer borrar TODO el historial de gastos?\nEsta acciÃ³n no se puede deshacer.")) {
                     this.expenses = [];
                     this.save();
                     this.render();
@@ -920,7 +1047,7 @@
 
                     // Check if Tesseract is loaded
                     if (typeof Tesseract === 'undefined') {
-                        throw new Error("La librería de escaneo no se cargó correctamente. Verifique su conexión a internet.");
+                        throw new Error("La librerÃ­a de escaneo no se cargÃ³ correctamente. Verifique su conexiÃ³n a internet.");
                     }
 
                     this.dom.ocrStatus.textContent = "Escaneando imagen (esto puede tardar)...";
@@ -953,7 +1080,7 @@
                 const priceRegex = /(\$?[\d,]+\.\d{2})/g;
 
                 lines.forEach(line => {
-                    let cleanLine = line.replace(/[^\w\s.,$áéíóúñÑÁÉÍÓÚ/-]/g, ' ').trim();
+                    let cleanLine = line.replace(/[^\w\s.,$Ã¡Ã©Ã­Ã³ÃºÃ±Ã‘ÃÃ‰ÃÃ“Ãš/-]/g, ' ').trim();
                     const prices = cleanLine.match(priceRegex);
 
                     if (prices && prices.length > 0) {
@@ -980,7 +1107,7 @@
                 });
 
                 if (items.length === 0) {
-                    alert("No se detectaron artículos claros. Intenta agregar filas manualmente.");
+                    alert("No se detectaron artÃ­culos claros. Intenta agregar filas manualmente.");
                 }
 
                 this.dom.processingState.classList.add('hidden');
@@ -1000,7 +1127,7 @@
 
                 tr.innerHTML = `
                     <td class="px-3 py-2">
-                        <input type="text" class="st-name w-full border-gray-200 rounded text-sm focus:ring-indigo-500 focus:border-indigo-500" value="${nameVal}" placeholder="Artículo">
+                        <input type="text" class="st-name w-full border-gray-200 rounded text-sm focus:ring-indigo-500 focus:border-indigo-500" value="${nameVal}" placeholder="ArtÃ­culo">
                     </td>
                     <td class="px-3 py-2">
                         <input type="number" class="st-qty w-full border-gray-200 rounded text-sm text-center focus:ring-indigo-500 focus:border-indigo-500" value="${qtyVal}" min="1">
@@ -1011,7 +1138,7 @@
                     <td class="px-3 py-2">
                         <div class="flex bg-gray-100 rounded p-1 justify-between st-assign-group">
                             <button type="button" class="flex-1 text-xs py-1 rounded transition-all ${data?.assign === 'Paola' ? 'bg-blue-500 text-white shadow' : 'text-gray-500 hover:bg-gray-200'}" onclick="app.setAssign(this, 'Paola')">P</button>
-                            <button type="button" class="flex-1 text-xs py-1 rounded transition-all ${!data || data?.assign === '50/50' ? 'bg-indigo-500 text-white shadow' : 'text-gray-500 hover:bg-gray-200'}" onclick="app.setAssign(this, '50/50')">½</button>
+                            <button type="button" class="flex-1 text-xs py-1 rounded transition-all ${!data || data?.assign === '50/50' ? 'bg-indigo-500 text-white shadow' : 'text-gray-500 hover:bg-gray-200'}" onclick="app.setAssign(this, '50/50')">Â½</button>
                             <button type="button" class="flex-1 text-xs py-1 rounded transition-all ${data?.assign === 'Tere' ? 'bg-green-500 text-white shadow' : 'text-gray-500 hover:bg-gray-200'}" onclick="app.setAssign(this, 'Tere')">T</button>
                         </div>
                         <input type="hidden" class="st-assign" value="${data?.assign || '50/50'}">
@@ -1051,7 +1178,7 @@
             processStaging() {
                 const rows = this.dom.stagingList.querySelectorAll('tr');
                 let addedCount = 0;
-                let store = prompt("¿De qué tienda son estos tickets? (Opcional)", "Tienda General") || "Varios";
+                let store = prompt("Â¿De quÃ© tienda son estos tickets? (Opcional)", "Tienda General") || "Varios";
 
                 rows.forEach(row => {
                     const name = row.querySelector('.st-name').value;
@@ -1101,9 +1228,9 @@
                     this.save();
                     this.render();
                     this.closeBulkModal();
-                    this.showToast(`${addedCount} artículos registrados correctamente`);
+                    this.showToast(`${addedCount} artÃ­culos registrados correctamente`);
                 } else {
-                    alert("No hay artículos válidos para agregar.");
+                    alert("No hay artÃ­culos vÃ¡lidos para agregar.");
                 }
             }
         }
@@ -1114,3 +1241,5 @@
 </body>
 
 </html>
+
+
