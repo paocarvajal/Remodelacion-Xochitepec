@@ -61,7 +61,7 @@
                             d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                     </svg>
                     <span class="ml-2 text-xl font-bold text-gray-900 tracking-tight">Gastos Xochitepec <span
-                            class="text-xs text-gray-500 font-normal">v1.8</span></span>
+                            class="text-xs text-gray-500 font-normal">v1.9</span></span>
                 </div>
                 <div class="flex items-center space-x-2">
                     <button onclick="app.injectManualTickets()"
@@ -803,7 +803,7 @@
                 if (!item) return;
 
                 this.editingId = id;
-                
+
                 // Populate form
                 this.dom.itemName.value = item.name;
                 this.dom.storeName.value = item.store || '';
@@ -811,11 +811,11 @@
                 this.dom.totalQty.value = item.totalQty;
                 this.dom.unitPrice.value = item.unitPrice;
                 this.dom.expenseDate.value = item.date;
-                
+
                 this.dom.qtyPaola.value = item.qtyPaola;
                 this.dom.qtyTere.value = item.qtyTere;
 
-                this.calcTotals(); 
+                this.calcTotals();
 
                 const btn = this.dom.form.querySelector('button[type="submit"]');
                 btn.innerHTML = `<svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg> Actualizar Gasto`;
@@ -834,7 +834,7 @@
 
                 this.dom.itemName.focus();
                 this.dom.form.scrollIntoView({ behavior: 'smooth' });
-                this.renderList(); 
+                this.renderList();
             }
 
             cancelEdit() {
@@ -842,14 +842,14 @@
                 this.dom.form.reset();
                 this.dom.expenseDate.valueAsDate = new Date();
                 this.dom.totalPrice.value = "0.00";
-                
+
                 const btn = this.dom.form.querySelector('button[type="submit"]');
                 btn.innerHTML = `<svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg> Agregar Gasto`;
                 btn.className = "bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-xl shadow-lg transform transition hover:-translate-y-0.5 focus:outline-none flex items-center";
 
                 const cancelBtn = document.getElementById('btn-cancel-edit');
                 if (cancelBtn) cancelBtn.remove();
-                
+
                 this.updateCostDisplay();
                 this.renderList();
             }
@@ -949,90 +949,114 @@
 
             // --- MANUAL TICKET INJECTION (AI ASSISTED) ---
             injectManualTickets() {
+                // Clear existing expenses as requested ("delete the previous items")
+                this.expenses = [];
+
                 const tickets = [
-                    // --- BATCH 1 (14 Jan - Previous) ---
-                    { date: '2026-01-14', store: 'Ferreprecios', name: 'Pistola Electrica Para Pintar', qty: 1, price: 1090.52 },
-                    { date: '2026-01-14', store: 'Ferreprecios', name: 'Gaveta Apilable Plastico', qty: 8, price: 15.52 },
-                    { date: '2026-01-14', store: 'Ferreprecios', name: 'Llave Articulada Plomero', qty: 1, price: 150.86 },
-                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Linterna ADIR 496 Blanca 3 LED', qty: 2, price: 34.45 },
-                    { date: '2026-01-13', store: 'Ferretera 41', name: 'Broca C/ Avellanador Madera 7pz', qty: 1, price: 103.42 },
-                    { date: '2026-01-13', store: 'Ferretera 41', name: 'Broca Sacabocado Madera', qty: 1, price: 111.48 },
-                    { date: '2026-01-13', store: 'Ferretera 41', name: 'Puntas Adir Impacto 5pz', qty: 1, price: 39.91 },
-                    { date: '2026-01-13', store: 'Ferretera 41', name: 'Disco 5 G180 Lija 5pz', qty: 1, price: 21.34 },
-                    { date: '2026-01-13', store: 'Ferretera 41', name: 'Mesa Trabajo Portatil 60cm', qty: 1, price: 558.62 },
-                    { date: '2026-01-14', store: 'Parisina', name: 'Plastico Pelicula Estampi (mts)', qty: 2.5, price: 29.99 },
-                    { date: '2026-01-14', store: 'Parisina', name: 'Decoracion Papel Tapiz (mts)', qty: 10, price: 49.99 },
-                    { date: '2026-01-13', store: 'Ferretera 41', name: 'Pasador Adir 3" Cromo', qty: 1, price: 16.31 },
-                    { date: '2026-01-13', store: 'Ferretera 41', name: 'Mensula Negra 8x10 Adir', qty: 4, price: 8.08 },
-                    { date: '2026-01-13', store: 'Ferretera 41', name: 'Mensula Negra 5x6 Adir', qty: 4, price: 3.93 }, 
-                    { date: '2026-01-13', store: 'Ferretera 41', name: 'Remachadora 10 Clasica', qty: 1, price: 108.49 },
-                    { date: '2026-01-13', store: 'Ferretera 41', name: 'Aflojatodo 110ml Santul', qty: 1, price: 22.80 },
+                    // TICKET 1 - PARISINA
+                    { date: '2026-01-14', store: 'Parisina', name: 'Plastico pelicula estampado (mts)', qty: 2.5, price: 29.99 },
+                    { date: '2026-01-14', store: 'Parisina', name: 'Decoracion papel tapiz (mts)', qty: 10, price: 49.99 },
 
-                    // --- BATCH 2 (15 Jan - Previous) ---
-                    // Arenci
-                    { date: '2026-01-15', store: 'Arenci', name: 'Monomando Lavabo Cisne Inox', qty: 2, price: 510.00 },
-                    { date: '2026-01-15', store: 'Arenci', name: 'Llave de Paso Sin Contratuerca', qty: 1, price: 70.01 },
-                    // FIX Ferreterias
-                    { date: '2026-01-12', store: 'FIX Ferreterias', name: 'Lona uso rudo 3x4m Verde', qty: 1, price: 305.00 },
-                    { date: '2026-01-12', store: 'FIX Ferreterias', name: 'Pintura Aerosol Cobre', qty: 1, price: 69.00 },
-                    { date: '2026-01-12', store: 'FIX Ferreterias', name: 'Pintura Aerosol Gris', qty: 4, price: 35.00 },
-                    { date: '2026-01-12', store: 'FIX Ferreterias', name: 'Pintura Aerosol Negro', qty: 2, price: 35.00 },
-                    { date: '2026-01-12', store: 'FIX Ferreterias', name: 'Linterna Minero LED', qty: 1, price: 65.00 },
-                    { date: '2026-01-12', store: 'FIX Ferreterias', name: 'Pilas Alcalinas (Pack)', qty: 2, price: 29.00 },
-                    { date: '2026-01-12', store: 'FIX Ferreterias', name: 'Bolsa Ecologica', qty: 1, price: 18.00 },
-                    // El 45 (Small Ticket 623)
-                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Cinta Teflon Adir 3/4', qty: 2, price: 2.85 },
-                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Cinta Aislante Vinil Negro', qty: 1, price: 12.85 },
-                    // SuperMat
-                    { date: '2026-01-12', store: 'SuperMat', name: 'Esmalte Negro Mate 4LT', qty: 1, price: 613.32 },
-                    { date: '2026-01-12', store: 'SuperMat', name: 'Cutter Alma Metalica', qty: 1, price: 45.00 },
-                    { date: '2026-01-12', store: 'SuperMat', name: 'Solvente Thinner 1LT', qty: 2, price: 48.00 },
-                    { date: '2026-01-12', store: 'SuperMat', name: 'Cinta Canela Empaque', qty: 1, price: 75.00 },
-                    { date: '2026-01-12', store: 'SuperMat', name: 'Brochas y Mascarilla', qty: 1, price: 81.00 },
-                    { date: '2026-01-12', store: 'SuperMat', name: 'Niples y Adaptadores Varios', qty: 1, price: 75.00 },
+                    // TICKET 2 - FERREPRECIOS (Precios Netos Calculados con IVA)
+                    { date: '2026-01-14', store: 'Ferreprecios', name: 'Pistola electrica para pintar 440W', qty: 1, price: 1265.00 },
+                    { date: '2026-01-14', store: 'Ferreprecios', name: 'Claveta articulable de plastico ancho', qty: 8, price: 18.00 },
+                    { date: '2026-01-14', store: 'Ferreprecios', name: 'Llave articulada para plomero 12', qty: 1, price: 175.00 },
 
-                    // --- BATCH 3 (New - Home Depot Home Depot 16 Jan) ---
-                    { date: '2026-01-16', store: 'Home Depot', name: 'Conector Para Lavabo (Neto)', qty: 1, price: 80.36 },
-                    { date: '2026-01-16', store: 'Home Depot', name: 'Resistol 5000 1 Lt (Neto)', qty: 1, price: 332.22 },
-                    { date: '2026-01-16', store: 'Home Depot', name: 'Pad Paint 7 (Neto)', qty: 1, price: 151.90 },
-                    { date: '2026-01-16', store: 'Home Depot', name: 'Rodillo Professional (Neto)', qty: 1, price: 50.96 },
-                    { date: '2026-01-16', store: 'Home Depot', name: 'Triplay Construccion (Neto)', qty: 1, price: 449.09 },
-                    { date: '2026-01-16', store: 'Home Depot', name: 'Mano de Obra', qty: 1, price: 105.00 },
+                    // TICKET 3 - ELECTRICA EL 45
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Linterna Adir 496 blanca 3 LED recargable', qty: 2, price: 34.45 },
 
-                    // --- BATCH 4 (New - El 45 Big Ticket 12/1/2026 CORRECTED) ---
-                    // Replaces the previous estimated entry
-                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Cespol Adir 2090 Flex', qty: 2, price: 36.85 },
-                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Pija Adir 13353 #8 1/2', qty: 2, price: 7.45 },
-                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Pija Adir 13354 #8 3/4', qty: 4, price: 8.85 },
-                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Pija Adir 13355 #8 1', qty: 2, price: 11.60 },
-                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Pija Adir 13364 #1 1/2', qty: 1, price: 21.05 },
-                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Regadera Adir 16125 Cua ABS', qty: 2, price: 99.50 },
-                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Mezcladora Lavabo Adir 16045', qty: 1, price: 168.90 },
-                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Coladera Adir 16054 Bote Tramp', qty: 1, price: 54.25 },
-                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Silicon Adir 1534 Transp', qty: 1, price: 15.90 },
-                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Llave Adir 453 Jardi Ros', qty: 1, price: 19.50 },
-                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Taquete Adir 1711 Plast 1/4', qty: 1, price: 7.00 },
-                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Taquete Adir 1712 Plast 5/16', qty: 1, price: 13.45 },
-                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Taquete Adir 1710 Plast 3/16', qty: 1, price: 7.95 },
-                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Desarmad Adir 3213 Cabinet', qty: 1, price: 10.20 },
-                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Llave Adir 425 Stilson 8', qty: 1, price: 41.90 },
-                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Placa Forza Arma Apag Sen', qty: 6, price: 37.50 },
-                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Placa Forza Arma Con Dople', qty: 6, price: 32.50 },
-                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Reflector Igoto 50W', qty: 2, price: 120.00 },
-                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Foco Igoto 15W LED', qty: 8, price: 13.00 },
-                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Extensio Igoto 30m Rude', qty: 1, price: 135.50 },
-                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Socket Iusa Porcela Redo', qty: 2, price: 13.50 },
-                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Cable Iusa 20m', qty: 1, price: 199.50 },
+                    // TICKET 4 - FERRETERA 41 (13 Dic 2025)
+                    { date: '2025-12-13', store: 'Ferretera 41', name: 'Broca avellanador p/madera 7 pzas Adir', qty: 1, price: 103.42 },
+                    { date: '2025-12-13', store: 'Ferretera 41', name: 'Broca sacabocado madera 8 pzas Adir', qty: 1, price: 111.48 },
+                    { date: '2025-12-13', store: 'Ferretera 41', name: 'Puntas Adir impacto 5 pzas', qty: 1, price: 39.91 },
+                    { date: '2025-12-13', store: 'Ferretera 41', name: 'Disco 5 G180 lija 5 pzas Adir', qty: 1, price: 21.34 },
+                    { date: '2025-12-13', store: 'Ferretera 41', name: 'Mesa de trabajo portatil 60cm', qty: 1, price: 558.62 },
+
+                    // TICKET 5 - FERRETERA 41 (13 Dic 2025)
+                    { date: '2025-12-13', store: 'Ferretera 41', name: 'Pasador Adir 3" cromo', qty: 1, price: 16.31 },
+                    { date: '2025-12-13', store: 'Ferretera 41', name: 'Mensula negra 8x1c Adir', qty: 4, price: 8.08 },
+                    { date: '2025-12-13', store: 'Ferretera 41', name: 'Mensula negra 5x6 Adir', qty: 4, price: 3.92 },
+                    { date: '2025-12-13', store: 'Ferretera 41', name: 'Remachadora 10 clasica c/60 remaches Santul', qty: 1, price: 108.49 },
+                    { date: '2025-12-13', store: 'Ferretera 41', name: 'Aflojatodo 110ml Santul', qty: 1, price: 22.80 },
+
+                    // TICKET 6 - FERREPRECIOS (ACTUALIZADO - Precios Netos)
+                    { date: '2026-01-14', store: 'Ferreprecios', name: 'Pintura esmalte acrilico aerosol cafe', qty: 2, price: 60.00 },
+                    { date: '2026-01-14', store: 'Ferreprecios', name: 'Rejilla acero inoxidable 5" 3 tornillos', qty: 2, price: 40.00 },
+                    { date: '2026-01-14', store: 'Ferreprecios', name: 'PortalÃ¡mpara de PVC para intemperie', qty: 4, price: 12.00 },
+                    { date: '2026-01-14', store: 'Ferreprecios', name: 'Rodillo para pintar Felpa 9" rugosa', qty: 1, price: 57.00 },
+                    { date: '2026-01-14', store: 'Ferreprecios', name: 'Guante de latex p/limpieza mediano', qty: 1, price: 26.00 },
+                    { date: '2026-01-14', store: 'Ferreprecios', name: 'Multicontacto triple aterrizado', qty: 1, price: 26.00 },
+                    { date: '2026-01-14', store: 'Ferreprecios', name: 'Plastiprotector 10M uso rudo', qty: 1, price: 23.00 },
+                    { date: '2026-01-14', store: 'Ferreprecios', name: 'Repuesto rodillo Felpa 9" extra rugosa', qty: 1, price: 34.00 },
+
+                    // TICKET 7 - ARENCI (Precios Netos)
+                    { date: '2026-01-15', store: 'Arenci', name: 'Monomando lavabo cisne 28 inox', qty: 2, price: 510.00 },
+                    { date: '2026-01-15', store: 'Arenci', name: 'Llave de paso sin contratuerda', qty: 1, price: 70.00 },
+
+                    // TICKET 8 - FIX FERRETERIAS
+                    { date: '2026-01-12', store: 'FIX Ferreterias', name: 'Lona uso rudo 3x4m verde', qty: 1, price: 305.00 },
+                    { date: '2026-01-12', store: 'FIX Ferreterias', name: 'Pintura en aerosol cobre metalizado', qty: 1, price: 63.00 },
+                    { date: '2026-01-12', store: 'FIX Ferreterias', name: 'Pintura en aerosol gris premium', qty: 4, price: 36.00 },
+                    { date: '2026-01-12', store: 'FIX Ferreterias', name: 'Pintura en aerosol negro metalizado', qty: 2, price: 35.00 },
+                    { date: '2026-01-12', store: 'FIX Ferreterias', name: 'Linterna de minero LED', qty: 1, price: 65.00 },
+                    { date: '2026-01-12', store: 'FIX Ferreterias', name: 'Blister con 4 pilas alcalinas (Pack 1)', qty: 1, price: 21.00 },
+                    { date: '2026-01-12', store: 'FIX Ferreterias', name: 'Blister con 4 pilas alcalinas (Pack 2)', qty: 1, price: 23.00 },
+                    { date: '2026-01-12', store: 'FIX Ferreterias', name: 'Bolsa ecologica naranja', qty: 1, price: 18.00 },
+
+                    // TICKET 9 - ELECTRICA EL 45
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Cinta Adir 12/6 Teflon 1/4', qty: 2, price: 2.85 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Cinta argos aislante vinil a color', qty: 1, price: 12.85 },
+
+                    // TICKET 10 - HOME DEPOT (Precios Netos)
+                    { date: '2026-01-12', store: 'Home Depot', name: 'Conector para lavabo/fregadero', qty: 1, price: 80.31 },
+                    { date: '2026-01-12', store: 'Home Depot', name: 'Resistol 5000 lata de 1lt', qty: 1, price: 286.40 },
+                    { date: '2026-01-12', store: 'Home Depot', name: 'Pad Paint 7', qty: 1, price: 151.90 },
+                    { date: '2026-01-12', store: 'Home Depot', name: 'Rodillo profesional (Pylam) 1 1/4', qty: 1, price: 50.96 },
+                    { date: '2026-01-12', store: 'Home Depot', name: 'Triplay construccion CDX 12mm', qty: 1, price: 449.09 },
+                    { date: '2026-01-12', store: 'Home Depot', name: 'Marco de obra', qty: 1, price: 105.00 },
+
+                    // TICKET 11 - SUPERMAT (Precios Netos)
+                    { date: '2026-01-12', store: 'SuperMat', name: 'Niple acero galvanizado 1/2', qty: 2, price: 7.00 },
+                    { date: '2026-01-12', store: 'SuperMat', name: 'Adaptador de hule 3/1 1/2 x 2', qty: 3, price: 7.00 },
+                    { date: '2026-01-12', store: 'SuperMat', name: 'Adaptador de hule 2/1 1/4 x 2', qty: 1, price: 7.00 },
+                    { date: '2026-01-12', store: 'SuperMat', name: 'Esmalpar negro mate 4lt', qty: 1, price: 613.32 },
+                    { date: '2026-01-12', store: 'SuperMat', name: 'Cutter alma metalica uso rudo', qty: 1, price: 45.00 },
+                    { date: '2026-01-12', store: 'SuperMat', name: 'Solvente thinner standar par 1lt', qty: 2, price: 48.00 },
+                    { date: '2026-01-12', store: 'SuperMat', name: 'Brocha la maestra 1/2', qty: 1, price: 19.00 },
+                    { date: '2026-01-12', store: 'SuperMat', name: 'Brocha la maestra 2', qty: 1, price: 19.00 },
+                    { date: '2026-01-12', store: 'SuperMat', name: 'Brocha la maestra 1 1/2', qty: 1, price: 36.89 },
+                    { date: '2026-01-12', store: 'SuperMat', name: 'Mascarilla con valvula Truper', qty: 1, price: 25.00 },
+                    { date: '2026-01-12', store: 'SuperMat', name: 'Cinta para empaque canela 50m', qty: 1, price: 75.03 },
+                    { date: '2026-01-12', store: 'SuperMat', name: 'Articulo Sin Descripcion', qty: 1, price: 35.00 },
+
+                    // TICKET 12 - ELECTRICA EL 45 (Ticket Grande)
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Cespol Adir 299R flex 1-1/4', qty: 2, price: 30.85 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Pija Adir 13953 #6 1/2', qty: 2, price: 7.45 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Pija Adir 13954 #6 3/4', qty: 4, price: 8.85 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Pija Adir 13955 #6 1', qty: 2, price: 11.60 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Pija Adir 13954 # 1 1/2', qty: 1, price: 21.05 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Arandela Adir 16/25 con abs 4', qty: 2, price: 99.50 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Mezclador Adir 16605 abs fijos', qty: 1, price: 168.90 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Cespol Adir 16200 bote 100mm', qty: 1, price: 71.00 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Coladera Adir 16054 univ', qty: 1, price: 54.25 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Silicon Adir 1534 transpn', qty: 1, price: 15.30 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Llave Adir 423 JR001 nvs', qty: 1, price: 19.50 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Taquete Adir 1711 plast 1/4', qty: 1, price: 7.00 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Taquete Adir 1712 plas 5/16', qty: 1, price: 13.45 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Taquete Adir 1710 ptas 3/16', qty: 1, price: 7.95 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Desarmad Adir 3213 cabinet', qty: 1, price: 10.20 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Llave Adir 425 stilson 8', qty: 1, price: 41.90 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Placa forza mark F20511', qty: 6, price: 37.50 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Placa forza mark F2068SS', qty: 6, price: 32.50 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Reflecto 180T0 50W', qty: 2, price: 120.00 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Foco 180T0 15W LED', qty: 8, price: 13.00 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Extension 180T0 30m', qty: 1, price: 135.50 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Socket 1050 porcela', qty: 2, price: 13.50 },
+                    { date: '2026-01-12', store: 'Electrica El 45', name: 'Cable 1050 20m 10aw', qty: 1, price: 199.50 },
                 ];
 
                 let count = 0;
-                // Simple hash to avoid duplicates
-                const existingHashes = new Set(this.expenses.map(e => `${e.date}-${e.store}-${e.name}-${e.unitPrice}`));
-
                 tickets.forEach(t => {
-                    const hash = `${t.date}-${t.store}-${t.name}-${t.price}`;
-                    if (existingHashes.has(hash)) return;
-
                     const total = t.qty * t.price;
                     const item = {
                         id: Date.now().toString() + Math.random().toString(36).substr(2, 5),
@@ -1040,13 +1064,17 @@
                         name: t.name,
                         store: t.store,
                         paidBy: 'Paola',
+
                         totalQty: t.qty,
                         unitPrice: t.price,
                         totalPrice: total,
-                        qtyPaola: t.qty / 2,
-                        qtyTere: t.qty / 2,
-                        costPaola: total / 2,
-                        costTere: total / 2
+
+                        // Charge ALL to Tere, Paid by Paola
+                        qtyPaola: 0,
+                        qtyTere: t.qty,
+
+                        costPaola: 0,
+                        costTere: total
                     };
                     this.expenses.unshift(item);
                     count++;
@@ -1054,18 +1082,15 @@
 
                 this.save();
                 this.render();
-                
-                if (count > 0) {
-                    this.showToast(`${count} tickets nuevos aÃ±adidos`);
-                    alert(`Â¡Ã‰xito! Se agregaron ${count} nuevos artÃ­culos.`);
-                } else {
-                    alert('No se encontraron tickets nuevos (ya estaban agregados).');
-                }
+
+                this.showToast("Lista actualizada y corregida");
+                alert(`Se han reemplazado todos los gastos con los ${count} artÃ­culos corregidos. Todo pagado por Paola y cargado a Tere.`);
             }
 
             confirmClearAll
 
-() {
+
+                () {
                 if (confirm("ADVERTENCIA: Â¿EstÃ¡s segura de querer borrar TODO el historial de gastos?\nEsta acciÃ³n no se puede deshacer.")) {
                     this.expenses = [];
                     this.save();
@@ -1309,7 +1334,3 @@
 </body>
 
 </html>
-
-
-
-
