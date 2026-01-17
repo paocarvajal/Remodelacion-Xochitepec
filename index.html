@@ -877,6 +877,234 @@
                     this.showToast("Historial eliminado");
                 }
             }
+
+            // --- BULK IMPORT FEATURES ---
+
+            openBulkModal() {
+                if (this.dom.bulkModal) {
+                    this.dom.bulkModal.classList.remove('hidden');
+                    this.dom.bulkModal.classList.add('flex');
+                    this.clearBulkState();
+                } else {
+                    console.error("Bulk Modal DOM element not found");
+                }
+            }
+
+            closeBulkModal() {
+                this.dom.bulkModal.classList.add('hidden');
+                this.dom.bulkModal.classList.remove('flex');
+            }
+
+            clearBulkState() {
+                this.dom.uploadPrompt.classList.remove('hidden');
+                this.dom.processingState.classList.add('hidden');
+                this.dom.stagingArea.classList.add('hidden');
+                this.dom.stagingList.innerHTML = '';
+                this.dom.btnImportAll.disabled = true;
+                this.dom.stagingCount.textContent = '0';
+                document.getElementById('ticketInput').value = '';
+                this.dom.ocrStatus.textContent = "Iniciando...";
+            }
+
+            async handleImageUpload(input) {
+                const file = input.files[0];
+                if (!file) return;
+
+                // Show processing UI
+                this.dom.uploadPrompt.classList.add('hidden');
+                this.dom.processingState.classList.remove('hidden');
+
+                try {
+                    this.dom.ocrStatus.textContent = "Cargando motor OCR...";
+
+                    // Check if Tesseract is loaded
+                    if (typeof Tesseract === 'undefined') {
+                        throw new Error("La librería de escaneo no se cargó correctamente. Verifique su conexión a internet.");
+                    }
+
+                    this.dom.ocrStatus.textContent = "Escaneando imagen (esto puede tardar)...";
+
+                    // Simple recognize - handles worker creation internally
+                    const ret = await Tesseract.recognize(file, 'spa', {
+                        logger: m => {
+                            if (m.status === 'recognizing text') {
+                                this.dom.ocrStatus.textContent = `Analizando texto: ${(m.progress * 100).toFixed(0)}%`;
+                            }
+                        }
+                    });
+
+                    this.dom.ocrStatus.textContent = "Procesando resultados...";
+                    this.parseOCRResult(ret.data.text);
+
+                } catch (err) {
+                    console.error(err);
+                    alert("Error al procesar la imagen: " + (err.message || err));
+                    this.clearBulkState();
+                }
+            }
+
+            parseOCRResult(text) {
+                const lines = text.split('\n').filter(l => l.trim().length > 0);
+                const items = [];
+
+                // Regex heuristics
+                // Look for lines ending in price: "PRODUCTO X 123.50"
+                const priceRegex = /(\$?[\d,]+\.\d{2})/g;
+
+                lines.forEach(line => {
+                    let cleanLine = line.replace(/[^\w\s.,$áéíóúñÑÁÉÍÓÚ/-]/g, ' ').trim();
+                    const prices = cleanLine.match(priceRegex);
+
+                    if (prices && prices.length > 0) {
+                        try {
+                            const lastPriceMatch = prices[prices.length - 1];
+                            let priceStr = lastPriceMatch.replace('$', '').replace(',', '');
+                            let price = parseFloat(priceStr);
+
+                            let name = cleanLine.substring(0, cleanLine.lastIndexOf(lastPriceMatch)).trim();
+
+                            // Cleanup name further
+                            name = name.replace(/[\d]+$/, '').trim(); // Remove trailing numbers
+
+                            if (name.length > 2 && price > 0) {
+                                items.push({
+                                    name: name,
+                                    qty: 1,
+                                    price: price,
+                                    assign: '50/50'
+                                });
+                            }
+                        } catch (e) { console.log("Skipping line", line); }
+                    }
+                });
+
+                if (items.length === 0) {
+                    alert("No se detectaron artículos claros. Intenta agregar filas manualmente.");
+                }
+
+                this.dom.processingState.classList.add('hidden');
+                this.dom.stagingArea.classList.remove('hidden');
+
+                items.forEach(item => this.addStagingRow(item));
+                this.updateStagingCount();
+            }
+
+            addStagingRow(data = null) {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-indigo-50 transition-colors group";
+
+                const nameVal = data ? data.name : '';
+                const qtyVal = data ? data.qty : 1;
+                const priceVal = data ? data.price : 0;
+
+                tr.innerHTML = `
+                    <td class="px-3 py-2">
+                        <input type="text" class="st-name w-full border-gray-200 rounded text-sm focus:ring-indigo-500 focus:border-indigo-500" value="${nameVal}" placeholder="Artículo">
+                    </td>
+                    <td class="px-3 py-2">
+                        <input type="number" class="st-qty w-full border-gray-200 rounded text-sm text-center focus:ring-indigo-500 focus:border-indigo-500" value="${qtyVal}" min="1">
+                    </td>
+                    <td class="px-3 py-2">
+                        <input type="number" class="st-price w-full border-gray-200 rounded text-sm text-center focus:ring-indigo-500 focus:border-indigo-500" value="${priceVal}" min="0" step="0.01">
+                    </td>
+                    <td class="px-3 py-2">
+                        <div class="flex bg-gray-100 rounded p-1 justify-between st-assign-group">
+                            <button type="button" class="flex-1 text-xs py-1 rounded transition-all ${data?.assign === 'Paola' ? 'bg-blue-500 text-white shadow' : 'text-gray-500 hover:bg-gray-200'}" onclick="app.setAssign(this, 'Paola')">P</button>
+                            <button type="button" class="flex-1 text-xs py-1 rounded transition-all ${!data || data?.assign === '50/50' ? 'bg-indigo-500 text-white shadow' : 'text-gray-500 hover:bg-gray-200'}" onclick="app.setAssign(this, '50/50')">½</button>
+                            <button type="button" class="flex-1 text-xs py-1 rounded transition-all ${data?.assign === 'Tere' ? 'bg-green-500 text-white shadow' : 'text-gray-500 hover:bg-gray-200'}" onclick="app.setAssign(this, 'Tere')">T</button>
+                        </div>
+                        <input type="hidden" class="st-assign" value="${data?.assign || '50/50'}">
+                    </td>
+                    <td class="px-3 py-2 text-center">
+                        <button onclick="this.closest('tr').remove(); app.updateStagingCount();" class="text-gray-300 hover:text-red-500">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </button>
+                    </td>
+                `;
+                this.dom.stagingList.appendChild(tr);
+                this.updateStagingCount();
+            }
+
+            setAssign(btn, type) {
+                const group = btn.parentElement;
+                const hiddenInput = group.nextElementSibling;
+
+                group.querySelectorAll('button').forEach(b => {
+                    b.className = 'flex-1 text-xs py-1 rounded transition-all text-gray-500 hover:bg-gray-200';
+                });
+
+                let colorClass = 'bg-indigo-500 text-white shadow';
+                if (type === 'Paola') colorClass = 'bg-blue-500 text-white shadow';
+                if (type === 'Tere') colorClass = 'bg-green-500 text-white shadow';
+
+                btn.className = `flex-1 text-xs py-1 rounded transition-all ${colorClass}`;
+                hiddenInput.value = type;
+            }
+
+            updateStagingCount() {
+                const count = this.dom.stagingList.children.length;
+                this.dom.stagingCount.textContent = count;
+                this.dom.btnImportAll.disabled = count === 0;
+            }
+
+            processStaging() {
+                const rows = this.dom.stagingList.querySelectorAll('tr');
+                let addedCount = 0;
+                let store = prompt("¿De qué tienda son estos tickets? (Opcional)", "Tienda General") || "Varios";
+
+                rows.forEach(row => {
+                    const name = row.querySelector('.st-name').value;
+                    const qty = parseFloat(row.querySelector('.st-qty').value) || 0;
+                    const price = parseFloat(row.querySelector('.st-price').value) || 0;
+                    const assign = row.querySelector('.st-assign').value;
+
+                    if (!name || price <= 0) return;
+
+                    const total = qty * price;
+                    let qP = 0, qT = 0, cP = 0, cT = 0;
+
+                    if (assign === 'Paola') {
+                        qP = qty; cP = total;
+                    } else if (assign === 'Tere') {
+                        qT = qty; cT = total;
+                    } else { // 50/50
+                        qP = qty / 2;
+                        qT = qty / 2;
+                        cP = total / 2;
+                        cT = total / 2;
+                    }
+
+                    const item = {
+                        id: Date.now().toString() + Math.random().toString(36).substr(2, 5),
+                        date: new Date().toISOString().split('T')[0],
+                        name: name,
+                        store: store,
+                        paidBy: document.getElementById('paidBy').value || 'Paola',
+
+                        totalQty: qty,
+                        unitPrice: price,
+                        totalPrice: total,
+
+                        qtyPaola: qP,
+                        qtyTere: qT,
+
+                        costPaola: cP,
+                        costTere: cT,
+                    };
+
+                    this.expenses.unshift(item);
+                    addedCount++;
+                });
+
+                if (addedCount > 0) {
+                    this.save();
+                    this.render();
+                    this.closeBulkModal();
+                    this.showToast(`${addedCount} artículos registrados correctamente`);
+                } else {
+                    alert("No hay artículos válidos para agregar.");
+                }
+            }
         }
 
         // Initialize App
